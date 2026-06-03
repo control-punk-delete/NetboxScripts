@@ -12,12 +12,15 @@ class GoogleSyncronization(Script):
     def run(self, event, commit):
         
 
-        TOKEN = event.data.get("google_sheet_id", None)
+        TOKEN = data.get("google_sheet_id", None)
 
         if not TOKEN:
-            self.log_debug("google_sheet_id is not definded.")
+            self.log_debug("google_sheet_id is not definded. Aborted!")
+            
+
+        self.log_debug(f"google_sheet_id defined {TOKEN}")
         
-        self.log_debug(event.data.keys())
+        self.log_debug(data.keys())
 
         
         
