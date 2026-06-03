@@ -22,11 +22,8 @@ class GoogleSyncronization(Script):
 
         self.log_debug(f"google_sheet_id defined {TOKEN}")
         
-        # Для легшого використання отримуємо customs_fields
+
         CUSTOM_FIELDS = data.get("custom_fields", None)
-
-        
-
         IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
 
         # Якщо немає ІР адрес - нічого не робимо
@@ -34,20 +31,17 @@ class GoogleSyncronization(Script):
             self.log_debug("Missing IP Addresses that should report")
             raise AbortScript("Missing custom field 'service_ndns_ips' that represent public IP Addresses that connected to ndns.")
 
-
         rows = []
 
         for IP in IP_ADDRESSES:
 
             ip_address = IPAddress.objects.get(pk=IP.get("id"))
 
-            tags = ip_address.tags.all()
-
-            if "reported" in tags:
+            if ip_address.tags.filter(name="reported").exists():
                 self.log_info(f"IP address {IP.get("display", None)} marked as reported. That means its already exist in table.")
                 continue
             
-            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), tags]
+            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), list(ip_address.tags.values_list('name', flat=True))]
             self.log_debug(f"New row is created: {row}")
 
             # Помічаємо що в ми опрацювали ці ІР адреси
