@@ -41,7 +41,7 @@ class GoogleSyncronization(Script):
 
             ip_address = IPAddress.objects.get(pk=IP.get("id"))
 
-            tags = ip_address.get("tags", [])
+            tags = ip_address.tags.all()
 
             if "reported" in tags:
                 self.log_info(f"IP address {IP.get("display", None)} marked as reported. That means its already exist in table.")
