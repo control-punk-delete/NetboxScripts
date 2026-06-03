@@ -34,7 +34,6 @@ class GoogleSyncronization(Script):
 
         rows = []
 
-        GS_DATA = 
         for IP in IP_ADDRESSES:
             
             row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP, "device", "device_full"]
