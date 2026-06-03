@@ -62,7 +62,7 @@ class GoogleSyncronization(Script):
         
 
         self.log_debug(f"Appended {len(rows)} rows: {rows}")
-        if commit:
+        
 
 
         
