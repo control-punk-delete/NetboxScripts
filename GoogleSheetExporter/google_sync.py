@@ -56,7 +56,7 @@ class GoogleSyncronization(Script):
         #if not SPREADSHEET_ID:
         #    raise AbortScript("Missing Google Sheet ID.")
             
-        self.log_debug(SPREADSHEET_ID)
+        #self.log_debug(SPREADSHEET_ID)
 
         CUSTOM_FIELDS = data.get("custom_fields", None)
         IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
