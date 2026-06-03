@@ -28,7 +28,7 @@ class GoogleSyncronization(Script):
         IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
 
         # Якщо немає ІР адрес - нічого не робимо
-        IF not IP_ADDRESSES:
+        if not IP_ADDRESSES:
             self.log_debug("Missing IP Addresses that should report - ABORT")
 
 
