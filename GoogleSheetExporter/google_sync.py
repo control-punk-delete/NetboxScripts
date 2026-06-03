@@ -51,6 +51,8 @@ class GoogleSyncronization(Script):
         
         self.log_debug(TOKEN)
 
+        TOKEN = json.dumps(TOKEN)
+
         SPREADSHEET_ID = data.get("spreadsheet_id", None)
 
         if not SPREADSHEET_ID:
