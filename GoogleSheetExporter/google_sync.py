@@ -38,7 +38,7 @@ class GoogleSyncronization(Script):
 
         for IP in IP_ADDRESSES:
             
-            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), IP.get("device_full", "unknown")]
+            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), IP.get("tags", "unknown")]
             self.log_debug(f"New row is created: {row}")
             rows.append(row)
              
