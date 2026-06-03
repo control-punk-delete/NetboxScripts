@@ -20,7 +20,31 @@ class GoogleSyncronization(Script):
 
         self.log_debug(f"google_sheet_id defined {TOKEN}")
         
-        self.log_debug(data.keys())
+        # Для легшого використання отримуємо customs_fields
+        CUSTOM_FIELDS = data.get("custom_fields", None)
+
+        
+
+        IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
+
+        # Якщо немає ІР адрес - нічого не робимо
+        IF not IP_ADDRESSES:
+            self.log_debug("Missing IP Addresses that should report - ABORT")
+
+
+        rows = []
+
+        GS_DATA = 
+        for IP in IP_ADDRESSES:
+            
+            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), "moniker", IP]
+            self.log_debug(f"New row is created: {row}")
+            rows.append(row)
+             
+        
+        
+
+        self.log_debug(f"Appended {len(rows)} rows: {rows}")
 
         
         
