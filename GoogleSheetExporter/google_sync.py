@@ -94,9 +94,9 @@ class GoogleSyncronization(Script):
         self.log_debug(f"Appended {len(ROWS)} rows: {ROWS}")
         self.log_debug("Start writing to Google Sheet")
 
-        SPREADSHEET_ID = "1sRxJDn5C0w8beJ2qt1sH2Y5cKpf4vjkJU3HHH6xVxWY"
+        sid = "1sRxJDn5C0w8beJ2qt1sH2Y5cKpf4vjkJU3HHH6xVxWY"
 
-        self.append_rows(self, spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
+        self.append_rows(self, spreadsheet_id=sid, token=TOKEN, rows=ROWS)
         self.log_success("Done")
 
 
