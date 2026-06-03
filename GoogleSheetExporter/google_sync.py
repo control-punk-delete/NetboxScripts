@@ -1,5 +1,6 @@
 from extras.scripts import Script
 from utilities.exceptions import AbortScript
+from ipam.models import IPAddress
 
 
 
@@ -37,8 +38,10 @@ class GoogleSyncronization(Script):
         rows = []
 
         for IP in IP_ADDRESSES:
+
+            ip_address = IPAddress.objects.get(pk=IP.get("id"))
             
-            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), IP.get("tags", "unknown")]
+            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), ip_address.get("tags", "unknown"), ip_address]
             self.log_debug(f"New row is created: {row}")
             rows.append(row)
              
