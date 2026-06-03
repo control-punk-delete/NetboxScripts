@@ -40,15 +40,30 @@ class GoogleSyncronization(Script):
         for IP in IP_ADDRESSES:
 
             ip_address = IPAddress.objects.get(pk=IP.get("id"))
+
+            tags = ip_address.get("tags", [])
+
+            if "reported" in tags:
+                self.log_info(f"IP address {IP.get("display", None)} marked as reported. That means its already exist in table.")
+                continue
             
             row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), ip_address.get("tags", "unknown"), ip_address]
             self.log_debug(f"New row is created: {row}")
+
+            # Помічаємо що в ми опрацювали ці ІР адреси
+            ip_address.tags.add("reported")
+            if commit:
+                ip_address.save()
+
+            self.log_debug("Add tag for IP that its in table")
             rows.append(row)
              
         
         
 
         self.log_debug(f"Appended {len(rows)} rows: {rows}")
+        if commit:
+
 
         
         
