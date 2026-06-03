@@ -9,7 +9,7 @@ class GoogleSyncronization(Script):
         description = "Google Sheet synchronizations"
         scheduling_enabled = False
 
-    def run(self, event, commit):
+    def run(self, data, commit):
         
 
         TOKEN = data.get("google_sheet_id", None)
