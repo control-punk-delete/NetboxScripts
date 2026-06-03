@@ -1,4 +1,3 @@
-import ipinfo
 from extras.scripts import Script
 from utilities.exceptions import AbortScript
 
