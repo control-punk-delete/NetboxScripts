@@ -15,7 +15,7 @@ class GoogleSyncronization(Script):
         scheduling_enabled = False
 
 
-    def append_rows(spreadsheet_id, token, rows):
+    def append_rows(self, spreadsheet_id, token, rows):
 
         token_info = json.loads(token)
 
@@ -94,8 +94,7 @@ class GoogleSyncronization(Script):
         self.log_debug(f"Appended {len(ROWS)} rows: {ROWS}")
         self.log_debug("Start writing to Google Sheet")
 
-
-        self.append_rows(SPREADSHEET_ID, TOKEN, ROWS)
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
         self.log_success("Done")
 
 
