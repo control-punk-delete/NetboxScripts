@@ -16,6 +16,7 @@ class GoogleSyncronization(Script):
 
         if not TOKEN:
             self.log_debug("google_sheet_id is not definded. Aborted!")
+            raise AbortScript("Missing Google Sheet ID.")
             
 
         self.log_debug(f"google_sheet_id defined {TOKEN}")
@@ -29,7 +30,8 @@ class GoogleSyncronization(Script):
 
         # Якщо немає ІР адрес - нічого не робимо
         if not IP_ADDRESSES:
-            self.log_debug("Missing IP Addresses that should report - ABORT")
+            self.log_debug("Missing IP Addresses that should report")
+            raise AbortScript("Missing custom field 'service_ndns_ips' that represent public IP Addresses that connected to ndns.")
 
 
         rows = []
