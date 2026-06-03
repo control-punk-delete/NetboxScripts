@@ -47,15 +47,16 @@ class GoogleSyncronization(Script):
                 self.log_info(f"IP address {IP.get("display", None)} marked as reported. That means its already exist in table.")
                 continue
             
-            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), tags, ip_address]
+            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("device", "unknown"), tags]
             self.log_debug(f"New row is created: {row}")
 
             # Помічаємо що в ми опрацювали ці ІР адреси
             ip_address.tags.add("reported")
+            self.log_info(f"Tag reported added to ip address: {IP.get("display", None)}")
             if commit:
+                self.log_debug("Save ip object")
                 ip_address.save()
 
-            self.log_debug("Add tag for IP that its in table")
             rows.append(row)
              
         
