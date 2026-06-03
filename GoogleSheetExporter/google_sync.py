@@ -24,6 +24,8 @@ class GoogleSyncronization(Script):
             scopes=["https://www.googleapis.com/auth/spreadsheets"]
         )
 
+        service = build("sheets", "v4", credentials=creds)
+
         body = { "values": rows }
 
 
