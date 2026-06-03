@@ -16,6 +16,7 @@ class GoogleSyncronization(Script):
 
 
     def append_rows(self, spreadsheet_id, token, rows):
+        
         token_info = json.loads(token)
 
         creds = Credentials.from_authorized_user_info(
@@ -47,13 +48,15 @@ class GoogleSyncronization(Script):
 
         if not TOKEN:
             raise AbortScript("Missing Google API Token.")
+        
+        self.log_debug(TOKEN)
 
         SPREADSHEET_ID = data.get("spreadsheet_id", None)
 
         if not SPREADSHEET_ID:
             raise AbortScript("Missing Google Sheet ID.")
             
-        
+        self.log_debug(SPREADSHEET_ID)
 
         CUSTOM_FIELDS = data.get("custom_fields", None)
         IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
@@ -91,7 +94,7 @@ class GoogleSyncronization(Script):
         self.log_debug(f"Appended {len(ROWS)} rows: {ROWS}")
         self.log_debug("Start writing to Google Sheet")
 
-        self.append_rows(self, spreadsheet_id=SPREADSHEET_ID, token=TOKEN ,rows=ROWS)
+        self.append_rows(self, spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
         self.log_success("Done")
 
 
