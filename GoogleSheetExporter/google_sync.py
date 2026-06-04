@@ -63,7 +63,14 @@ class GoogleSyncronization(Script):
         self.log_debug(SPREADSHEET_ID)
 
         CUSTOM_FIELDS = data.get("custom_fields", None)
-        IP_ADDRESSES = CUSTOM_FIELDS.get("service_ndns_ips", [])
+
+
+        IP_ADDRESSES = IPAddress.objects.filter(  
+            tenant_id=data.get('id'),  
+            tags__slug='dns'  
+        ) 
+
+        self.log_debug(IP_ADDRESSES)
 
         # Якщо немає ІР адрес - нічого не робимо
         if not IP_ADDRESSES:
@@ -74,21 +81,30 @@ class GoogleSyncronization(Script):
 
         for IP in IP_ADDRESSES:
 
-            ip_address = IPAddress.objects.get(pk=IP.get("id"))
+            # ip_address = IPAddress.objects.get(pk=IP.get("id"))
 
-            if ip_address.tags.filter(name="reported").exists():
-                self.log_warning(f"IP address {IP.get("display", None)} marked as reported. That means its already exist in table.")
+            if IP.tags.filter(name="reported").exists():
+                self.log_warning(f"IP address {IP.display} marked as reported. That means its already exist in table.")
                 continue
             
-            row = [data.get("name", "undefined"), CUSTOM_FIELDS.get("edrpou", "undefined"), IP.get("display", None), IP.get("dscription", "unknown")]
+            row = [ 
+                data.get("name", "unknown"),
+                CUSTOM_FIELDS.get("edrpou", "unknown"),
+                IP.display,
+                IP.cf.get("router_model", "unknown"),
+                IP.cf.get("router_vendor", "unknown"),
+                IP.cf.get("ndns_config_date", "unknown")
+                ]
+
+
             self.log_debug(f"New row is created: {row}")
 
             # Помічаємо що в ми опрацювали ці ІР адреси
-            ip_address.tags.add("reported")
-            self.log_info(f"Tag reported added to ip address: {IP.get("display", None)}")
+            IP.tags.add("reported")
+            self.log_info(f"Tag reported added to ip address: {IP.display}")
             if commit:
                 self.log_debug("Save ip object")
-                ip_address.save()
+                IP.save()
 
             ROWS.append(row)
              
