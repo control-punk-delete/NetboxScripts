@@ -58,11 +58,9 @@ class GoogleExporter(Script):
         if not EXPORT_FIELDS:
             raise AbortScript("No fields that should be exported")
 
-            
-        self.log_debug(EXPORT_FIELDS)
+        self.log_debug(f"Fields to export: {EXPORT_FIELDS}")
 
         CUSTOM_FIELDS = data.get("custom_fields", None)
-
 
         ROWS = [[]]
 
@@ -74,13 +72,17 @@ class GoogleExporter(Script):
             else:
                 row[0].append(data.get(field_name, None))
 
+        ip_address = IPAddress.objects.get(pk=data.get("id"))
+
         self.log_debug(row)
 
-        self.log_debug(f"Appended {len(ROWS)} rows: {ROWS}")
         self.log_debug("Start writing to Google Sheet")
-
         self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
-        self.log_success("Done")
+
+        ip_address.tags.add("reported")
+        if commit:
+            self.log_debug("IP address marked as reported")
+            ip_address.save()
 
         
 

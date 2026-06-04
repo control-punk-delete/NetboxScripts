@@ -81,7 +81,7 @@ class GoogleSyncronization(Script):
 
         for IP in IP_ADDRESSES:
 
-            # ip_address = IPAddress.objects.get(pk=IP.get("id"))
+            # 
 
             if IP.tags.filter(name="reported").exists():
                 self.log_warning(f"IP address {IP.address} marked as reported. That means its already exist in table.")
@@ -102,9 +102,7 @@ class GoogleSyncronization(Script):
             # Помічаємо що в ми опрацювали ці ІР адреси
             IP.tags.add("reported")
             self.log_info(f"Tag reported added to ip address: {IP.address}")
-            if commit:
-                self.log_debug("Save ip object")
-                IP.save()
+
 
             ROWS.append(row)
              
