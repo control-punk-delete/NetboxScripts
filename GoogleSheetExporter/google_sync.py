@@ -90,7 +90,7 @@ class GoogleSyncronization(Script):
             row = [ 
                 data.get("name", "unknown"),
                 CUSTOM_FIELDS.get("edrpou", "unknown"),
-                IP.address,
+                str(IP.address),
                 IP.cf.get("router_model", "unknown"),
                 IP.cf.get("router_vendor", "unknown"),
                 IP.cf.get("ndns_config_date", "unknown")
