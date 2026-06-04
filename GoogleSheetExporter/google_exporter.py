@@ -64,17 +64,24 @@ class GoogleExporter(Script):
         CUSTOM_FIELDS = data.get("custom_fields", None)
 
 
-        row = []
+        ROWS = [[]]
 
         for field_name in EXPORT_FIELDS:
 
             if "." in field_name:
-                row.append(data.get(field_name.split(".")[0], None).get(field_name.split(".")[1], None))
+                row[0].append(data.get(field_name.split(".")[0], None).get(field_name.split(".")[1], None))
 
             else:
-                row.append(data.get(field_name, None))
+                row[0].append(data.get(field_name, None))
 
         self.log_debug(row)
+
+        self.log_debug(f"Appended {len(ROWS)} rows: {ROWS}")
+        self.log_debug("Start writing to Google Sheet")
+
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
+        self.log_success("Done")
+
         
 
 
