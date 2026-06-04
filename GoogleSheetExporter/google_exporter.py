@@ -62,22 +62,22 @@ class GoogleExporter(Script):
 
         CUSTOM_FIELDS = data.get("custom_fields", None)
 
-        ROWS = [[]]
+        rows = [[]]
 
         for field_name in EXPORT_FIELDS:
 
             if "." in field_name:
-                row[0].append(data.get(field_name.split(".")[0], None).get(field_name.split(".")[1], None))
+                rows[0].append(data.get(field_name.split(".")[0], None).get(field_name.split(".")[1], None))
 
             else:
-                row[0].append(data.get(field_name, None))
+                rows[0].append(data.get(field_name, None))
 
         ip_address = IPAddress.objects.get(pk=data.get("id"))
 
-        self.log_debug(row)
+        self.log_debug(rows)
 
         self.log_debug("Start writing to Google Sheet")
-        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=ROWS)
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=rows)
 
         ip_address.tags.add("reported")
         if commit:
