@@ -70,7 +70,7 @@ class GoogleSyncronization(Script):
             tags__slug='ndns'  
         ) 
 
-        self.log_debug(IP_ADDRESSES)
+        self.log_debug(type(IP_ADDRESSES))
 
         # Якщо немає ІР адрес - нічого не робимо
         if not IP_ADDRESSES:
@@ -84,13 +84,13 @@ class GoogleSyncronization(Script):
             # ip_address = IPAddress.objects.get(pk=IP.get("id"))
 
             if IP.tags.filter(name="reported").exists():
-                self.log_warning(f"IP address {IP.display} marked as reported. That means its already exist in table.")
+                self.log_warning(f"IP address {IP.address} marked as reported. That means its already exist in table.")
                 continue
             
             row = [ 
                 data.get("name", "unknown"),
                 CUSTOM_FIELDS.get("edrpou", "unknown"),
-                IP.display,
+                IP.address,
                 IP.cf.get("router_model", "unknown"),
                 IP.cf.get("router_vendor", "unknown"),
                 IP.cf.get("ndns_config_date", "unknown")
@@ -101,7 +101,7 @@ class GoogleSyncronization(Script):
 
             # Помічаємо що в ми опрацювали ці ІР адреси
             IP.tags.add("reported")
-            self.log_info(f"Tag reported added to ip address: {IP.display}")
+            self.log_info(f"Tag reported added to ip address: {IP.address}")
             if commit:
                 self.log_debug("Save ip object")
                 IP.save()
