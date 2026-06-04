@@ -67,7 +67,7 @@ class GoogleExporter(Script):
         for field_name in EXPORT_FIELDS:
 
             if "." in field_name:
-                rows[0].append(data.get(field_name.split(".")[0], None).get(field_name.split(".")[1], None))
+                rows[0].append(data.get(field_name.split(".")[0], {}).get(field_name.split(".")[1], None))
 
             else:
                 rows[0].append(data.get(field_name, None))
