@@ -67,7 +67,7 @@ class GoogleSyncronization(Script):
 
         IP_ADDRESSES = IPAddress.objects.filter(  
             tenant_id=data.get('id'),  
-            tags__slug='dns'  
+            tags__slug='ndns'  
         ) 
 
         self.log_debug(IP_ADDRESSES)
