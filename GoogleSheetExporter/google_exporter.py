@@ -71,8 +71,8 @@ class GoogleExporter(Script):
                 expo = data.get(field_name.split(".")[0], {}).get(field_name.split(".")[1], None)
                 if type(expo) == "datetime.date":
                     expo = expo.strftime('%d-%m-%Y')
-                    
-                rows[0].append(expo)
+
+                rows[0].append(str(expo))
 
 
 
