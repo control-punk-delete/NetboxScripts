@@ -8,10 +8,10 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from googleapiclient.errors import HttpError
 
-class GoogleSyncronization(Script):
+class GoogleExporter(Script):
     class Meta(Script.Meta):
-        name = "GoogleSheetSynch"
-        description = "Google Sheet synchronizations"
+        name = "GoogleExporter"
+        description = "Google Sheet Exporter"
         scheduling_enabled = False
 
 
