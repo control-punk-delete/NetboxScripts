@@ -15,7 +15,7 @@ class GoogleExporter(Script):
         scheduling_enabled = False
 
 
-    def append_rows(self, spreadsheet_id, token, rows):
+    def append_rows(self, spreadsheet_id, token, sheet_name, rows):
 
         token_info = json.loads(token)
 
@@ -32,7 +32,7 @@ class GoogleExporter(Script):
         try:
             result = service.spreadsheets().values().append(
                 spreadsheetId=spreadsheet_id,
-                range="Sheet1!A1",
+                range=f"{sheet_name}!A1",
                 valueInputOption="USER_ENTERED",
                 insertDataOption="INSERT_ROWS",
                 body=body
@@ -53,6 +53,10 @@ class GoogleExporter(Script):
         SPREADSHEET_ID = data.get("spreadsheet_id", None)
         if not SPREADSHEET_ID:
             raise AbortScript("Missing Google Sheet ID.")
+            
+        SHEET_NAME = data.get("sheet_name", "Sheet1")
+        self.log_debug(f"Write to {SHEET_NAME}:A1 - Range.")
+
 
         EXPORT_FIELDS = data.get("export_fields", None)
         if not EXPORT_FIELDS:
@@ -67,14 +71,11 @@ class GoogleExporter(Script):
         for field_name in EXPORT_FIELDS:
 
             if "." in field_name:
-                
                 expo = data.get(field_name.split(".")[0], {}).get(field_name.split(".")[1], None)
                 if type(expo) == "datetime.date":
                     expo = expo.strftime('%d-%m-%Y')
-
+                    
                 rows[0].append(str(expo))
-
-
 
             else:
                 rows[0].append(data.get(field_name, None))
@@ -84,7 +85,7 @@ class GoogleExporter(Script):
         self.log_debug(rows)
 
         self.log_debug("Start writing to Google Sheet")
-        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, rows=rows)
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, SHEET_NAME ,rows=rows)
 
         ip_address.tags.add("reported")
         if commit:
