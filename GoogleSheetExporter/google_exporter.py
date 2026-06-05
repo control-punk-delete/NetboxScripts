@@ -85,7 +85,7 @@ class GoogleExporter(Script):
         self.log_debug(rows)
 
         self.log_debug("Start writing to Google Sheet")
-        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, SHEET_NAME ,rows=rows)
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, token=TOKEN, sheet_name=SHEET_NAME ,rows=rows)
 
         ip_address.tags.add("reported")
         if commit:
