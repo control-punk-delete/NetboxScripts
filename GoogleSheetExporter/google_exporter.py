@@ -38,9 +38,9 @@ class GoogleExporter(Script):
                 body=body
             ).execute()
 
-            print(f"{result.get('updates').get('updatedRows')} rows added")
+            self.log_debug(f"{result.get('updates').get('updatedRows')} rows added")
         except HttpError as error:
-            print(f"An error occurred: {error}")
+            raise AbortScript(f"An error occurred: {error}")
 
 
     def run(self, data, commit):
