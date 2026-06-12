@@ -88,9 +88,9 @@ class GoogleSyncronizationQuaga(Script):
                 TENANT_OBJECT.description, 
                 TENANT_OBJECT.cf.get("edrpou", None), 
                 TENANT_OBJECT.cf.get("region", {}).name, 
-                str(IP_ADDRESS_OBJECT.address),
+                str(IP_ADDRESS_OBJECT.address).split("/")[0],
                 IP_ADDRESS_OBJECT.cf.get("isp", None), 
-                IP_ADDRESS_OBJECT.cf.get("asn", None), 
+                IP_ADDRESS_OBJECT.cf.get("asn", None).ltrim("AS"), 
 
             ]
 

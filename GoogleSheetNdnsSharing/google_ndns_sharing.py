@@ -103,7 +103,7 @@ class GoogleSyncronization(Script):
                 None, # moniker
                 None, # M_moniker
                 None, # moniker_final
-                str(IP_ADDRESS_OBJECT.address), # ip
+                str(IP_ADDRESS_OBJECT.address).split("/")[0], # ip
                 None, # kontrol
                 None, # comment
                 None, # natdns
@@ -112,7 +112,7 @@ class GoogleSyncronization(Script):
                 None, # log-dns
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
-                IP_ADDRESS_OBJECT.cf.get("asn", None), # isp_asn
+                IP_ADDRESS_OBJECT.cf.get("asn", None).ltrim("AS"), # isp_asn
                 CONTACT_OBJECT.name, # person
                 CONTACT_OBJECT.phone, # contact 
                 CONTACT_OBJECT.email, # email
