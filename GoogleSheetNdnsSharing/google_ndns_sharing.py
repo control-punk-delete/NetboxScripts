@@ -82,7 +82,12 @@ class GoogleSyncronization(Script):
         TENANT_OBJECT = Tenant.objects.get(pk=tenant_id)
         
         # Отримання даних про контактну особу даного тенанта
-        CONTACT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
+        CONTACT_ASSIGMENT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
+        
+        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_name)
+        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_title)
+        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_phone)
+        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_email)
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
@@ -110,9 +115,9 @@ class GoogleSyncronization(Script):
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
                 IP_ADDRESS_OBJECT.cf.get("asn", None), # isp_asn
-                CONTACT_OBJECT.name, # person
-                CONTACT_OBJECT.phone, # contact 
-                CONTACT_OBJECT.email, # email
+                None, # person
+                None, # contact 
+                None, # email
                 None, # kpx
                 None  # ko.gov.ua
             ]
