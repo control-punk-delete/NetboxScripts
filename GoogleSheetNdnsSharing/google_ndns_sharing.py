@@ -82,7 +82,7 @@ class GoogleSyncronization(Script):
         TENANT_OBJECT = Tenant.objects.get(pk=tenant_id)
         
         # Отримання даних про контактну особу даного тенанта
-        CONTACT_OBJECT = tenant.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
+        CONTACT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
