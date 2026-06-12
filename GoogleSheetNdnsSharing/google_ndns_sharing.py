@@ -89,7 +89,7 @@ class GoogleSyncronization(Script):
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
                 None, 
-                TENANT_OBJECT.get.("name", None), 
+                TENANT_OBJECT.get("name", None), 
                 TENANT_OBJECT.cf.get("edrpou", None), 
                 TENANT_OBJECT.cf.get("region", {}).get("name", None), 
                 None, IP_ADDRESS_OBJECT.cf.get("device_full", None), 
