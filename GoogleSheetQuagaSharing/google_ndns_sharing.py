@@ -2,7 +2,6 @@ from extras.scripts import Script
 from utilities.exceptions import AbortScript
 from tenancy.models import Tenant, Contact
 from ipam.models import IPAddress
-from tenancy.choices import ContactPriorityChoices 
 
 # Google Libs
 import json
@@ -10,10 +9,10 @@ from googleapiclient.discovery import build
 from google.oauth2.credentials import Credentials
 from googleapiclient.errors import HttpError
 
-class GoogleSyncronization(Script):
+class GoogleSyncronizationQuaga(Script):
     class Meta(Script.Meta):
-        name = "Google Sheet Integration"
-        description = "Автоматичне відправлення інформації про НДНС в відповідні таблиці"
+        name = "Google SOC Assets"
+        description = "Автоматичне відправлення інформації інформаційні активи"
         scheduling_enabled = False
 
     # Функція запису в Google Sheet
@@ -80,41 +79,19 @@ class GoogleSyncronization(Script):
 
         # Отримання даних про Tenant якому належить цей актив
         TENANT_OBJECT = Tenant.objects.get(pk=tenant_id)
-        
-        # Отримання даних про контактну особу даного тенанта
-        CONTACT_OBJECT = tenant.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
 
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
-                None, # n
-                TENANT_OBJECT.description, # org
-                TENANT_OBJECT.cf.get("edrpou", None), # edrpou
-                TENANT_OBJECT.cf.get("region", {}).name, # region
-                None, #city
-                IP_ADDRESS_OBJECT.cf.get("device_full", None),  # device full
-                IP_ADDRESS_OBJECT.cf.get("device_vendor", None), # device vendor
-                None, # domain
-                None, # moniker
-                None, # M_moniker
-                None, # moniker_final
-                str(IP_ADDRESS_OBJECT.address), # ip
-                None, # kontrol
-                None, # comment
-                None, # natdns
-                None, # mispioc
-                None, # log-firewall
-                None, # log-dns
-                None, # edr
-                IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
-                IP_ADDRESS_OBJECT.cf.get("asn", None), # isp_asn
-                CONTACT_OBJECT.name, # person
-                CONTACT_OBJECT.phone, # contact 
-                CONTACT_OBJECT.email, # email
-                None, # kpx
-                None  # ko.gov.ua
+                TENANT_OBJECT.description, 
+                TENANT_OBJECT.cf.get("edrpou", None), 
+                TENANT_OBJECT.cf.get("region", {}).name, 
+                str(IP_ADDRESS_OBJECT.address),
+                IP_ADDRESS_OBJECT.cf.get("isp", None), 
+                IP_ADDRESS_OBJECT.cf.get("asn", None), 
+
             ]
 
         ROWS.append(row)
