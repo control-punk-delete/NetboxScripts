@@ -83,11 +83,13 @@ class GoogleSyncronization(Script):
         
         # Отримання даних про контактну особу даного тенанта
         CONTACT_ASSIGMENT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
+
+        CONTACT_OBJECT = Contact.objects.get(pk=CONTACT_ASSIGMENT_OBJECT.contact_id)
         
-        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_name)
-        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_title)
-        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_phone)
-        self.log_debug(CONTACT_ASSIGMENT_OBJECT.contact_email)
+
+        self.log_debug(CONTACT_OBJECT.name)
+        self.log_debug(CONTACT_OBJECT.phone)
+        self.log_debug(CONTACT_OBJECT.email)
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
