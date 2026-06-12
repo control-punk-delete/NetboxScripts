@@ -87,7 +87,33 @@ class GoogleSyncronization(Script):
         ROWS = []
 
         # Mapping NetBox Data to  Google Table Columns
-        row = [ None, TENANT_OBJECT.get.("name", None), TENANT_OBJECT.cf.get("edrpou", None), TENANT_OBJECT.cf.get("region", {}).get("name", None), None, IP_ADDRESS_OBJECT.cf.get("device_full", None), IP_ADDRESS_OBJECT.cf.get("device_vendor", None), None, None, None, None, IP_ADDRESS_OBJECT.get("address", None), None, None, None, None, None, None, None, IP_ADDRESS_OBJECT.cf.get("isp", None), IP_ADDRESS_OBJECT.cf.get("asn", None), None, None,  None, None, None ]
+        row = [ 
+                None, 
+                TENANT_OBJECT.get.("name", None), 
+                TENANT_OBJECT.cf.get("edrpou", None), 
+                TENANT_OBJECT.cf.get("region", {}).get("name", None), 
+                None, IP_ADDRESS_OBJECT.cf.get("device_full", None), 
+                IP_ADDRESS_OBJECT.cf.get("device_vendor", None),
+                None, 
+                None, 
+                None, 
+                None, 
+                IP_ADDRESS_OBJECT.get("address", None), 
+                None, 
+                None, 
+                None, 
+                None, 
+                None, 
+                None, 
+                None, 
+                IP_ADDRESS_OBJECT.cf.get("isp", None), 
+                IP_ADDRESS_OBJECT.cf.get("asn", None), 
+                None, 
+                None,  
+                None, 
+                None, 
+                None
+            ]
 
         ROWS.append(row)
         self.log_info(f"Row that created: {row}")
