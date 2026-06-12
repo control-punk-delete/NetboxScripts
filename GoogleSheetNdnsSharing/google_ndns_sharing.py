@@ -98,7 +98,7 @@ class GoogleSyncronization(Script):
                 None, 
                 None, 
                 None, 
-                IP_ADDRESS_OBJECT.address,
+                IP_ADDRESS_OBJECT.display,
                 None, 
                 None, 
                 None, 
@@ -122,7 +122,7 @@ class GoogleSyncronization(Script):
         IP_ADDRESS_OBJECT.tags.add("reported")
         if commit:
             IP_ADDRESS_OBJECT.save()
-            self.log_info(f"Tag reported added to ip address: {IP.address}")
+            self.log_info(f"Tag reported added to ip address: {IP_ADDRESS_OBJECT.address}")
 
         # Запуск функції запису в Google Sheet
         self.append_rows(spreadsheet_id=SPREADSHEET_ID, rows=ROWS, token=TOKEN, page_name=PAGE_NAME)
