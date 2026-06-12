@@ -98,7 +98,7 @@ class GoogleSyncronization(Script):
                 None, 
                 None, 
                 None, 
-                IP_ADDRESS_OBJECT.display,
+                str(IP_ADDRESS_OBJECT.address),
                 None, 
                 None, 
                 None, 
