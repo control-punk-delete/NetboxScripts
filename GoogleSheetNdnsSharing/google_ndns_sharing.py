@@ -132,7 +132,7 @@ class GoogleSyncronization(Script):
             self.log_info(f"Tag reported added to ip address: {IP_ADDRESS_OBJECT.address}")
 
         # Запуск функції запису в Google Sheet
-        self.append_rows(spreadsheet_id=SPREADSHEET_ID, rows=ROWS, token=TOKEN, page_name=PAGE_NAME)
+        #self.append_rows(spreadsheet_id=SPREADSHEET_ID, rows=ROWS, token=TOKEN, page_name=PAGE_NAME)
 
 
 
