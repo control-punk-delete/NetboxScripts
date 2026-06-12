@@ -85,11 +85,7 @@ class GoogleSyncronization(Script):
         CONTACT_ASSIGMENT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
 
         CONTACT_OBJECT = Contact.objects.get(pk=CONTACT_ASSIGMENT_OBJECT.contact_id)
-        
 
-        self.log_debug(CONTACT_OBJECT.name)
-        self.log_debug(CONTACT_OBJECT.phone)
-        self.log_debug(CONTACT_OBJECT.email)
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
@@ -117,9 +113,9 @@ class GoogleSyncronization(Script):
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
                 IP_ADDRESS_OBJECT.cf.get("asn", None), # isp_asn
-                None, # person
-                None, # contact 
-                None, # email
+                CONTACT_OBJECT.name, # person
+                CONTACT_OBJECT.phone, # contact 
+                CONTACT_OBJECT.email, # email
                 None, # kpx
                 None  # ko.gov.ua
             ]
@@ -134,7 +130,7 @@ class GoogleSyncronization(Script):
             self.log_info(f"Tag reported added to ip address: {IP_ADDRESS_OBJECT.address}")
 
         # Запуск функції запису в Google Sheet
-        #self.append_rows(spreadsheet_id=SPREADSHEET_ID, rows=ROWS, token=TOKEN, page_name=PAGE_NAME)
+        self.append_rows(spreadsheet_id=SPREADSHEET_ID, rows=ROWS, token=TOKEN, page_name=PAGE_NAME)
 
 
 
