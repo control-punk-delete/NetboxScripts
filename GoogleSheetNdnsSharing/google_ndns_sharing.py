@@ -91,7 +91,7 @@ class GoogleSyncronization(Script):
                 None, 
                 TENANT_OBJECT.name, 
                 TENANT_OBJECT.cf.get("edrpou", None), 
-                TENANT_OBJECT.cf.get("region", {}).get("name", None), 
+                TENANT_OBJECT.cf.get("region", {}).name, 
                 None, IP_ADDRESS_OBJECT.cf.get("device_full", None), 
                 IP_ADDRESS_OBJECT.cf.get("device_vendor", None),
                 None, 
