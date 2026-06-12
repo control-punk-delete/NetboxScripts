@@ -88,32 +88,32 @@ class GoogleSyncronization(Script):
 
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
-                None, # n
-                TENANT_OBJECT.get.("name", None), # org
-                TENANT_OBJECT.cf.get("edrpou", None), # edrpou 
-                TENANT_OBJECT.cf.get("region", {}).get("name", None), # region
-                None, # city
-                IP_ADDRESS_OBJECT.cf.get("device_full", None), # device_full
-                IP_ADDRESS_OBJECT.cf.get("device_vendor", None), # device_vendor
-                None, # domain
-                None, # moniker
-                None, # M_moniker
-                None, # moniker_final
-                IP_ADDRESS_OBJECT.get("address", None) # ip 
-                None, # kontrol
-                None, # comment 
-                None,  # natdns 
-                None, # mispioc 
-                None, #log-firewall 
-                None, #log-dns 
-                None, #edr 
-                IP_ADDRESS_OBJECT.cf.get("isp", None), #isp_org 
-                IP_ADDRESS_OBJECT.cf.get("asn", None), #isp_asn 
-                None, #person 
-                None,  #contact 
-                None, #email 
-                None, #kpx 
-                None #ko.gov.ua
+None, 
+TENANT_OBJECT.get.("name", None), 
+TENANT_OBJECT.cf.get("edrpou", None),
+TENANT_OBJECT.cf.get("region", {}).get("name", None), 
+None, 
+IP_ADDRESS_OBJECT.cf.get("device_full", None), 
+IP_ADDRESS_OBJECT.cf.get("device_vendor", None), 
+None, 
+None, 
+None, 
+None, 
+IP_ADDRESS_OBJECT.get("address", None) 
+None, 
+None, 
+None,  
+None, 
+None, 
+None, 
+None, 
+IP_ADDRESS_OBJECT.cf.get("isp", None), 
+IP_ADDRESS_OBJECT.cf.get("asn", None), 
+None, 
+None,  
+None, 
+None,
+None 
         ]
 
         ROWS.append(row)
