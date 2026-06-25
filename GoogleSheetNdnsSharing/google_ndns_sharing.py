@@ -83,19 +83,25 @@ class GoogleSyncronization(Script):
         
         # Отримання даних про контактну особу даного тенанта
         CONTACT_ASSIGMENT_OBJECT = TENANT_OBJECT.contacts.filter(priority=ContactPriorityChoices.PRIORITY_PRIMARY).first()
-
-        CONTACT_OBJECT = Contact.objects.get(pk=CONTACT_ASSIGMENT_OBJECT.contact_id)
-        # Опрацювання якщо такого обʼєкту немає.
-        if not CONTACT_OBJECT:
+        
+        if not CONTACT_ASSIGMENT_OBJECT:
             contact_name = None
             contact_phone = None
             contact_email = None
-        else:
-            contact_name = CONTACT_OBJECT.name
-            contact_phone = CONTACT_OBJECT.phone
-            contact_email = CONTACT_OBJECT.email
             
-    
+        else:
+            CONTACT_OBJECT = Contact.objects.get(pk=CONTACT_ASSIGMENT_OBJECT.contact_id)
+
+            if not CONTACT_OBJECT:
+                contact_name = None
+                contact_phone = None
+                contact_email = None
+                
+            else:
+                contact_name = CONTACT_OBJECT.name
+                contact_phone = CONTACT_OBJECT.phone
+                contact_email = CONTACT_OBJECT.email
+            
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
