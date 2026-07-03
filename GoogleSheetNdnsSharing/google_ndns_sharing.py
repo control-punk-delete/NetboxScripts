@@ -109,23 +109,23 @@ class GoogleSyncronization(Script):
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
                 None, # n
-                TENANT_OBJECT.description, # org
+                TENANT_OBJECT.name, # org
                 TENANT_OBJECT.cf.get("edrpou", None), # edrpou
                 TENANT_OBJECT.cf.get("region", {}).name, # region
                 None, #city
                 IP_ADDRESS_OBJECT.cf.get("device_full", None),  # device full
                 IP_ADDRESS_OBJECT.cf.get("device_vendor", None), # device vendor
-                None, # domain
+                TENANT_OBJECT.slug, # domain
                 None, # moniker
                 None, # M_moniker
                 None, # moniker_final
                 str(IP_ADDRESS_OBJECT.address).split("/")[0], # ip
                 None, # kontrol
                 None, # comment
-                None, # natdns
-                None, # mispioc
+                IP_ADDRESS_OBJECT.cf.get("ndns_configured", None), # natdns
+                IP_ADDRESS_OBJECT.cf.get("misp_configured", None), # mispioc
                 None, # log-firewall
-                None, # log-dns
+                IP_ADDRESS_OBJECT.cf.get("syslog_configured", None), # log-dns
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
                 IP_ADDRESS_OBJECT.cf.get("asn", None).lstrip("AS"), # isp_asn
