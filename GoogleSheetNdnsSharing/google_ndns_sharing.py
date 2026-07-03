@@ -128,7 +128,7 @@ class GoogleSyncronization(Script):
                 None, # log-dns
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
-                IP_ADDRESS_OBJECT.cf.get("asn", None).ltrim("AS"), # isp_asn
+                IP_ADDRESS_OBJECT.cf.get("asn", None).lstrip("AS"), # isp_asn
                 contact_name, # person
                 contact_phone, # contact 
                 contact_email, # email
