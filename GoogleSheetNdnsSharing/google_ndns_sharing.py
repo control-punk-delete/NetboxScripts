@@ -115,8 +115,8 @@ class GoogleSyncronization(Script):
                 None, #city
                 IP_ADDRESS_OBJECT.cf.get("device_full", None),  # device full
                 IP_ADDRESS_OBJECT.cf.get("device_vendor", None), # device vendor
-                TENANT_OBJECT.slug, # domain
-                None, # moniker
+                None, # domain
+                TENANT_OBJECT.slug, # moniker
                 None, # M_moniker
                 None, # moniker_final
                 str(IP_ADDRESS_OBJECT.address).split("/")[0], # ip
