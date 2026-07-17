@@ -58,8 +58,11 @@ class DnsResolve(Script):
                 ipaddr, created = IPAddress.objects.get_or_create(address= ip ,  
                                                                   defaults={ 'status': 'active',
                                                                              'tenant':  tenant} )
+                # Якщо обʼєкт був створений - встановлюємо відповідний source 
+                if created:
+                  ipaddr.custom_field_data['source'] = "scanner"
+                 
                 resolved_ips_id.append(ipaddr.id)
-
                 # Для кожного ІР привʼязуємо домен який виконав резолв
                 # Отримуємо перелік вже привʼязаних доменів
                 exist_domains = ipaddr.custom_field_data.get('domains')
