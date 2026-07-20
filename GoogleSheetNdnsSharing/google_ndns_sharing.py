@@ -105,6 +105,20 @@ class GoogleSyncronization(Script):
 
         # Формування рядку, який необхідно записати в таблицю
         ROWS = []
+        if IP_ADDRESS_OBJECT.cf.get("ndns_configured", None):
+            ndns_configured = "1"
+        else:
+            ndns_configured = "0"
+        
+        if IP_ADDRESS_OBJECT.cf.get("misp_configured", None): 
+            misp_configured = "1"
+        else:
+            misp_configured = "0"
+            
+        if IP_ADDRESS_OBJECT.cf.get("syslog_configured", None):
+            syslog_configured = "1"
+        else: 
+            syslog_configured = "0"
 
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
@@ -122,10 +136,10 @@ class GoogleSyncronization(Script):
                 str(IP_ADDRESS_OBJECT.address).split("/")[0], # ip
                 None, # kontrol
                 None, # comment
-                IP_ADDRESS_OBJECT.cf.get("ndns_configured", None), # natdns
-                IP_ADDRESS_OBJECT.cf.get("misp_configured", None), # mispioc
+                ndns_configured, # natdns
+                misp_configured, # mispioc
                 None, # log-firewall
-                IP_ADDRESS_OBJECT.cf.get("syslog_configured", None), # log-dns
+                syslog_configured, # log-dns
                 None, # edr
                 IP_ADDRESS_OBJECT.cf.get("isp", None), # isp_org
                 IP_ADDRESS_OBJECT.cf.get("asn", None).lstrip("AS"), # isp_asn
