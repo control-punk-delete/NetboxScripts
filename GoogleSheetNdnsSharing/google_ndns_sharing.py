@@ -120,10 +120,14 @@ class GoogleSyncronization(Script):
         else: 
             syslog_configured = "0"
 
+        tenant_name = TENANT_OBJECT.description
+        if not tenant_name:
+            tenant_name= TENANT_OBJECT.name
+
         # Mapping NetBox Data to  Google Table Columns
         row = [ 
                 None, # n
-                TENANT_OBJECT.name, # org
+                tenant_name, # org
                 TENANT_OBJECT.cf.get("edrpou", None), # edrpou
                 TENANT_OBJECT.cf.get("region", {}).name, # region
                 None, #city
