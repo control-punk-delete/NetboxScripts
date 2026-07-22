@@ -126,14 +126,16 @@ class YouControlEnrichment(Script):
         self.log_debug(f"Extract Region: {region}")
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
-            parent_tenant = Tenant.objects.get(cf_edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou"))
+            parent_tenant = Tenant.objects.get(custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou"))
             self.log_debug(f"Extract Parent Tenant: {parent_tenant}")
             tenant.cf.parent_tenant = parent_tenant.id
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
 
         tenant.cf.region = region_id
+
         tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
         tenant.tags.add(tag)
+
         tenant.save()
         
