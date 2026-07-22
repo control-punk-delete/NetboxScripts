@@ -143,10 +143,13 @@ class YouControlEnrichment(Script):
                     f"with edrpou {youcontrol_parsed_data.get('parent_tenant_edrpou')} not in NetBox" )
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
+        self.log_debug(f"Зміна повної назви: {tenant.description}")
+
         tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
         tenant.tags.add(tag)
 
         if commit:
+            self.log_debug(f"Змінений обʼєкт: {tenant.description}")
             tenant.save()
 
         
