@@ -5,7 +5,8 @@ from bs4 import BeautifulSoup
 from extras.scripts import Script
 from utilities.exceptions import AbortScript
 from tenancy.models import Tenant
-
+from dcim.models import Region
+from extras.models import Tag  
 
 class YouControlEnrichment(Script):
     class Meta(Script.Meta):
@@ -40,18 +41,6 @@ class YouControlEnrichment(Script):
         containers = soup.find_all("div", {"class": "seo-table-contain"})
 
         for container in containers:
-            seo_table_head = container.find("div", {"class": "seo-table-head"})
-            seo_table_name = seo_table_head.find(["div", "h2"], {"class": "seo-table-name"})
-            seo_table_date = seo_table_head.find("div", {"class": "seo-table-date"})
-
-            if seo_table_name:
-                print(seo_table_name.get_text(strip=True))
-
-                if seo_table_date:
-                    print(seo_table_date.find("span").get_text())
-
-            else:
-                continue
 
             seo_table = container.find("div", {"class": "seo-table"})
             seo_table_rows = seo_table.find_all("div", {"class": "seo-table-row"})
@@ -64,7 +53,6 @@ class YouControlEnrichment(Script):
                 values = row.find(["span", "p", "div"], {"class": "seo-table-col-2"})
                 if values:
                     values = values.get_text().strip().split('\n')
-
 
                     if key == "Повне найменування юридичної особи":    
                         you_control_data["tenant_name_full"] = values[0].strip()
@@ -97,11 +85,12 @@ class YouControlEnrichment(Script):
                     if key == "Контактна інформація":
                         you_control_data["tenant_address"] = values[3].strip()
                         you_control_data["tenant_city"] = you_control_data["tenant_address"].split(",")[-3].strip()
+                        you_control_data["tenant_region"] = you_control_data["tenant_address"].split(",")[2].strip()
 
                     if key == "Перелік засновників/учасників юридичної особи":
                         you_control_data["parent_tenant_name"] = values[0].strip()
                         you_control_data["parent_tenant_edrpou"] = values[2].strip()
-                        you_control_data["parent_tenant_address"] = values[4].strip()
+                        you_control_data["parent_tenant_address"] = values[5].strip()
 
         return you_control_data
 
@@ -120,16 +109,31 @@ class YouControlEnrichment(Script):
 
         youcontrol_data = self.youcontrol_search_by_edrpou(edrpou = tenant_edrpou)
 
-        if youcontrol_data:
-            youcontrol_parsed_data = self.youcontrol_result_parser(data = youcontrol_data)
+        if not youcontrol_data:
+            raise AbortScript("YouControl data is missing")
 
-        else:
-            self.log_error("YouControl data is missing")
+        youcontrol_parsed_data = self.youcontrol_result_parser(data = youcontrol_data)
+
+        if not youcontrol_parsed_data:
+            raise AbortScript("Parser does not extract any data from YouControl data")
+            
         
         self.log_info(youcontrol_parsed_data)
 
 
-        
+        region = Region.objects.filter(name__icontains=youcontrol_parsed_data.get("tenant_region").split(" ")[0]).first()
+        region_id = region.id
+        self.log_debug(f"Extract Region: {region}")
 
+        if youcontrol_parsed_data.get("parent_tenant_edrpou"):
+            parent_tenant = Tenant.objects.get(cf_edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou"))
+            self.log_debug(f"Extract Parent Tenant: {parent_tenant}")
+            tenant.cf.parent_tenant = parent_tenant.id
 
+        tenant.description = youcontrol_parsed_data.get("tenant_name_full")
+
+        tenant.cf.region = region_id
+        tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
+        tenant.tags.add(tag)
+        tenant.save()
         
