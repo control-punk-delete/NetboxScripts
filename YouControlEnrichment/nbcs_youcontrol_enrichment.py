@@ -126,12 +126,20 @@ class YouControlEnrichment(Script):
         self.log_debug(f"Extract Region: {region}")
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
-            parent_tenant = Tenant.objects.get(custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou"))
-            if not parent_tenant:
-                self.log_debug(f"Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} not in NetBox")
-            else:
-                self.log_debug(f"Extract Parent Tenant: {parent_tenant}")
-                tenant.cf.parent_tenant = parent_tenant.id
+            self.log_debug(f"Find Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} in YouControl")
+
+        
+            try:  
+                parent_tenant = Tenant.objects.get(  
+                custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou")  
+            )  
+                self.log_debug(f"Parent Tenant exist in NetBox - {parent_tenant}")  
+                tenant.cf.parent_tenant = parent_tenant.id 
+                
+            except Tenant.DoesNotExist:  
+                self.log_debug(  
+                    f"Parent Tenant {youcontrol_parsed_data.get('parent_tenant_name')} "  
+                    f"with edrpou {youcontrol_parsed_data.get('parent_tenant_edrpou')} not in NetBox" )
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
 
