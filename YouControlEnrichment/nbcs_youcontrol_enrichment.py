@@ -124,6 +124,7 @@ class YouControlEnrichment(Script):
         region = Region.objects.filter(name__icontains=youcontrol_parsed_data.get("tenant_region").split(" ")[0]).first()
         region_id = region.id
         self.log_debug(f"Extract Region: {region}")
+        tenant.cf["region"] = region_id
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
             self.log_debug(f"Find Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} in YouControl")
@@ -143,7 +144,7 @@ class YouControlEnrichment(Script):
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
 
-        tenant.cf.region = region_id
+        
 
         tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
         tenant.tags.add(tag)
