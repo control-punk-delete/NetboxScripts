@@ -109,13 +109,13 @@ class YouControlEnrichment(Script):
     def run(self, data, commit):
 
         self.log_debug(data)
+        tenant_id = data.get('id')
+        self.log_debug(tenant_id)
 
-        tenant_data = data.get('data', {})
-        tenant_id = tenant_data.get('id')       
+        tenant = Tenant.objects.get(pk = tenant_id)
+        self.log_debug(tenant)
 
-        tenant = Tenant.objects.get(pk=tenant_id)
-
-        tenant_edrpou = tenant.cf.get("edrpou")
+        tenant_edrpou = data.get('custom_fields', {}).get("edrpou")
         self.log_debug(tenant_edrpou)
 
         youcontrol_data = self.youcontrol_search_by_edrpou(edrpou = tenant_edrpou)
