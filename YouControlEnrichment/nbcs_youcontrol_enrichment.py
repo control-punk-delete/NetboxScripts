@@ -127,8 +127,11 @@ class YouControlEnrichment(Script):
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
             parent_tenant = Tenant.objects.get(custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou"))
-            self.log_debug(f"Extract Parent Tenant: {parent_tenant}")
-            tenant.cf.parent_tenant = parent_tenant.id
+            if not parent_tenant:
+                self.log_debug(f"Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} not in NetBox")
+            else:
+                self.log_debug(f"Extract Parent Tenant: {parent_tenant}")
+                tenant.cf.parent_tenant = parent_tenant.id
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
 
