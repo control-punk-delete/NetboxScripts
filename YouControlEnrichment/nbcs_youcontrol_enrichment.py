@@ -99,13 +99,13 @@ class YouControlEnrichment(Script):
 
         self.log_debug(data)
         tenant_id = data.get('id')
-        self.log_debug("Tenant id: ", tenant_id)
+        self.log_debug(f"Tenant id: {tenant_id}")
 
         tenant = Tenant.objects.get(pk = tenant_id)
-        self.log_debug("Tenant object: ", tenant)
+        self.log_debug(f"Tenant object: {tenant}")
 
         tenant_edrpou = data.get('custom_fields', {}).get("edrpou")
-        self.log_debug("Tenant edrpou: ", tenant_edrpou)
+        self.log_debug(f"Tenant edrpou: {tenant_edrpou}")
 
         youcontrol_data = self.youcontrol_search_by_edrpou(edrpou = tenant_edrpou)
 
@@ -118,7 +118,7 @@ class YouControlEnrichment(Script):
             raise AbortScript("Parser does not extract any data from YouControl data")
             
         
-        self.log_info("YouControl Data: ", youcontrol_parsed_data)
+        self.log_info(f"YouControl Data: {youcontrol_parsed_data}")
 
 
         region = Region.objects.filter(name__icontains=youcontrol_parsed_data.get("tenant_region").split(" ")[0]).first()
@@ -146,5 +146,7 @@ class YouControlEnrichment(Script):
         tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
         tenant.tags.add(tag)
 
-        tenant.save()
+        if commit:
+            tenant.save()
+
         
