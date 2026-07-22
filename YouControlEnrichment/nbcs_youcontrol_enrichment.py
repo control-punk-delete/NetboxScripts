@@ -99,13 +99,13 @@ class YouControlEnrichment(Script):
 
         self.log_debug(data)
         tenant_id = data.get('id')
-        self.log_debug(tenant_id)
+        self.log_debug("Tenant id: ", tenant_id)
 
         tenant = Tenant.objects.get(pk = tenant_id)
-        self.log_debug(tenant)
+        self.log_debug("Tenant object: ", tenant)
 
         tenant_edrpou = data.get('custom_fields', {}).get("edrpou")
-        self.log_debug(tenant_edrpou)
+        self.log_debug("Tenant edrpou: ", tenant_edrpou)
 
         youcontrol_data = self.youcontrol_search_by_edrpou(edrpou = tenant_edrpou)
 
@@ -118,13 +118,13 @@ class YouControlEnrichment(Script):
             raise AbortScript("Parser does not extract any data from YouControl data")
             
         
-        self.log_info(youcontrol_parsed_data)
+        self.log_info("YouControl Data: ", youcontrol_parsed_data)
 
 
         region = Region.objects.filter(name__icontains=youcontrol_parsed_data.get("tenant_region").split(" ")[0]).first()
         region_id = region.id
         self.log_debug(f"Extract Region: {region}")
-        tenant.cf["region"] = region_id
+        tenant.custom_field_data["region"] = region_id
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
             self.log_debug(f"Find Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} in YouControl")
@@ -135,7 +135,7 @@ class YouControlEnrichment(Script):
                 custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou")  
             )  
                 self.log_debug(f"Parent Tenant exist in NetBox - {parent_tenant}")  
-                tenant.cf["parent_tenant"] = parent_tenant.id 
+                tenant.custom_field_data["parent_tenant"] = parent_tenant.id
 
             except Tenant.DoesNotExist:  
                 self.log_debug(  
@@ -143,9 +143,6 @@ class YouControlEnrichment(Script):
                     f"with edrpou {youcontrol_parsed_data.get('parent_tenant_edrpou')} not in NetBox" )
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
-
-        
-
         tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
         tenant.tags.add(tag)
 
