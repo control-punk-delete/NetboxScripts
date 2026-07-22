@@ -148,7 +148,7 @@ class YouControlEnrichment(Script):
 
 
         if commit:
-            self.log_debug(f"Змінений обʼєкт: {tenant}")
+            self.log_success(f"Успішно змінений обʼєкт: {tenant}")
             tenant.save()
             
             tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
