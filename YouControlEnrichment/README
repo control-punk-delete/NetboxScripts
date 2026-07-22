@@ -1,0 +1,3 @@
+sudo /opt/netbox/venv/bin/pip install beautifulsoup4
+
+echo "beautifulsoup4" >> /opt/netbox/local_requirements.txt
