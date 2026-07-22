@@ -134,8 +134,8 @@ class YouControlEnrichment(Script):
                 custom_field_data__edrpou=youcontrol_parsed_data.get("parent_tenant_edrpou")  
             )  
                 self.log_debug(f"Parent Tenant exist in NetBox - {parent_tenant}")  
-                tenant.cf.parent_tenant = parent_tenant.id 
-                
+                tenant.cf["parent_tenant"] = parent_tenant.id 
+
             except Tenant.DoesNotExist:  
                 self.log_debug(  
                     f"Parent Tenant {youcontrol_parsed_data.get('parent_tenant_name')} "  
