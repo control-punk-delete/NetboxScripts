@@ -122,15 +122,14 @@ class YouControlEnrichment(Script):
 
         
         if youcontrol_parsed_data.get("tenant_region", "").startswith("місто"):
-            
             search_word = youcontrol_parsed_data.get("tenant_region", "").split(" ")[1]
             self.log_debug(f"Region search word: {search_word}")
         else:
             search_word = youcontrol_parsed_data.get("tenant_region", "").split(" ")[0]
             self.log_debug(f"Region search word: {search_word}")
 
-
         region = Region.objects.filter(name__icontains=search_word).first()
+
         if region:
             region_id = region.id
             self.log_debug(f"Extract Region: {region}")
@@ -153,12 +152,13 @@ class YouControlEnrichment(Script):
                     f"with edrpou {youcontrol_parsed_data.get('parent_tenant_edrpou')} not in NetBox" )
 
         tenant.description = youcontrol_parsed_data.get("tenant_name_full")
-        self.log_debug(f"Зміна повної назви: {tenant.description}")
+        self.log_debug(f"Update Tenant description (full name): {tenant.description}")
 
 
 
         if commit:
-            self.log_success(f"Успішно змінений обʼєкт: {tenant}")
+            self.log_success(f"Tenant suucessfully updated: {tenant}")
+            tenant._changelog_message = "Automatic apdate from YouControl"
             tenant.save()
             
             tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
