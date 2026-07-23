@@ -119,8 +119,8 @@ class YouControlEnrichment(Script):
             
         
         self.log_info(f"YouControl Data: {youcontrol_parsed_data}")
+        tenant.custom_field_data["full_address"] = youcontrol_parsed_data.get("tenant_region")
 
-        
         if youcontrol_parsed_data.get("tenant_region", "").startswith("місто"):
             search_word = youcontrol_parsed_data.get("tenant_region", "").split(" ")[1]
             self.log_debug(f"Region search word: {search_word}")
@@ -158,7 +158,7 @@ class YouControlEnrichment(Script):
 
         if commit:
             self.log_success(f"Tenant suucessfully updated: {tenant}")
-            tenant._changelog_message = "Automatic apdate from YouControl"
+            tenant._changelog_message = "Automatic update from YouControl"
             tenant.save()
             
             tag, created = Tag.objects.get_or_create( name="youcontrol", defaults={'slug': 'youcontrol'})
