@@ -120,11 +120,21 @@ class YouControlEnrichment(Script):
         
         self.log_info(f"YouControl Data: {youcontrol_parsed_data}")
 
+        
+        if youcontrol_parsed_data.get("tenant_region", "").startswith("місто"):
+            
+            search_word = youcontrol_parsed_data.get("tenant_region", "").split(" ")[1]
+            self.log_debug(f"Region search word: {search_word}")
+        else:
+            search_word = youcontrol_parsed_data.get("tenant_region", "").split(" ")[0]
+            self.log_debug(f"Region search word: {search_word}")
 
-        region = Region.objects.filter(name__icontains=youcontrol_parsed_data.get("tenant_region").split(" ")[0]).first()
-        region_id = region.id
-        self.log_debug(f"Extract Region: {region}")
-        tenant.custom_field_data["region"] = region_id
+
+        region = Region.objects.filter(name__icontains=search_word).first()
+        if region:
+            region_id = region.id
+            self.log_debug(f"Extract Region: {region}")
+            tenant.custom_field_data["region"] = region_id
 
         if youcontrol_parsed_data.get("parent_tenant_edrpou"):
             self.log_debug(f"Find Parent Tenant {youcontrol_parsed_data.get("parent_tenant_name")} with edrpou {youcontrol_parsed_data.get("parent_tenant_edrpou")} in YouControl")
