@@ -1,4 +1,6 @@
 import ipinfo
+import ipaddress
+
 from extras.scripts import Script
 from utilities.exceptions import AbortScript
 from ipam.models import IPAddress, IPRange, Prefix
@@ -33,6 +35,31 @@ class IPInfoEnrichment(Script):
             
         else:
             raise AbortScript("Unexpected input data")
+# Перевірка ІР чи публічна
+        ip_obj_lib = ipaddress.ip_address(ip_str)
+
+        ip_tags = []
+                
+        if ip_obj_lib.is_loopback:
+                    ip_tags.append("loopback-ip")
+                    self.log_debug("IP Address is Loopback")
+                    
+        elif ip_obj_lib.is_private:
+                    ip_tags.append("private-ip")
+                    self.log_debug("IP Address is Private")
+                    
+         elif ip_obj_lib.is_multicast:
+                    ip_tags.append("multicast-ip")
+                    self.log_debug("IP Address is multicast")
+                    
+        elif ip_obj_lib.is_link_local:
+                    ip_tags.append("link-local-ip")
+                    self.log_debug("IP Address is Link Local")
+                        
+         elif ip_obj_lib.is_reserved:
+                    ip_tags.append("reserved-ip")
+                    self.log_debug("IP Address is reserved")
+                    
 
         self.log_debug("Create handler")
         handler = ipinfo.getHandler(TOKEN)
@@ -87,6 +114,11 @@ class IPInfoEnrichment(Script):
 
                 self.log_debug(f"Add a categories provides tags: {cf_providers}")
                 for p in cf_providers:
+                    tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
+                    ip_obj.tags.add(tag )
+
+                self.log_debug(f"Add verification tags: {ip_tags} ")
+                for t in ip_tags:
                     tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
                     ip_obj.tags.add(tag )
         
