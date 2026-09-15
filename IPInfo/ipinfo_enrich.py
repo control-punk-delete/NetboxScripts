@@ -120,6 +120,6 @@ class IPInfoEnrichment(Script):
 
             self.log_debug(f"Add verification tags: {ip_tags} ")
             for t in ip_tags:
-                tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
+                tag, created = Tag.objects.get_or_create( name=t.lower(), defaults={'slug': t.lower()})
                 ip_obj.tags.add(tag )
         
