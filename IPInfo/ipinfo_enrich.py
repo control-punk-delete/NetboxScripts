@@ -48,7 +48,7 @@ class IPInfoEnrichment(Script):
                     ip_tags.append("private-ip")
                     self.log_debug("IP Address is Private")
                     
-         elif ip_obj_lib.is_multicast:
+        elif ip_obj_lib.is_multicast:
                     ip_tags.append("multicast-ip")
                     self.log_debug("IP Address is multicast")
                     
@@ -56,7 +56,7 @@ class IPInfoEnrichment(Script):
                     ip_tags.append("link-local-ip")
                     self.log_debug("IP Address is Link Local")
                         
-         elif ip_obj_lib.is_reserved:
+        elif ip_obj_lib.is_reserved:
                     ip_tags.append("reserved-ip")
                     self.log_debug("IP Address is reserved")
                     
@@ -122,14 +122,3 @@ class IPInfoEnrichment(Script):
                     tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
                     ip_obj.tags.add(tag )
         
-        
-
-
-
-
-        
-
-
-              
-        
-
