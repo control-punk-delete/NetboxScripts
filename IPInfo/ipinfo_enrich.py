@@ -39,26 +39,27 @@ class IPInfoEnrichment(Script):
         ip_obj_lib = ipaddress.ip_address(ip_str)
 
         ip_tags = []
+        self.log_debug(f"Start validate {ip_obj_lib}")
                 
         if ip_obj_lib.is_loopback:
-                    ip_tags.append("loopback-ip")
-                    self.log_debug("IP Address is Loopback")
+            ip_tags.append("loopback-ip")
+            self.log_debug("IP Address is Loopback")
                     
         elif ip_obj_lib.is_private:
-                    ip_tags.append("private-ip")
-                    self.log_debug("IP Address is Private")
+            ip_tags.append("private-ip")
+            self.log_debug("IP Address is Private")
                     
         elif ip_obj_lib.is_multicast:
-                    ip_tags.append("multicast-ip")
-                    self.log_debug("IP Address is multicast")
+            ip_tags.append("multicast-ip")
+            self.log_debug("IP Address is multicast")
                     
         elif ip_obj_lib.is_link_local:
-                    ip_tags.append("link-local-ip")
-                    self.log_debug("IP Address is Link Local")
+            ip_tags.append("link-local-ip")
+            self.log_debug("IP Address is Link Local")
                         
         elif ip_obj_lib.is_reserved:
-                    ip_tags.append("reserved-ip")
-                    self.log_debug("IP Address is reserved")
+            ip_tags.append("reserved-ip")
+            self.log_debug("IP Address is reserved")
                     
 
         self.log_debug("Create handler")
@@ -117,8 +118,8 @@ class IPInfoEnrichment(Script):
                     tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
                     ip_obj.tags.add(tag )
 
-                self.log_debug(f"Add verification tags: {ip_tags} ")
-                for t in ip_tags:
-                    tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
-                    ip_obj.tags.add(tag )
+            self.log_debug(f"Add verification tags: {ip_tags} ")
+            for t in ip_tags:
+                tag, created = Tag.objects.get_or_create( name=p.lower(), defaults={'slug': p.lower()})
+                ip_obj.tags.add(tag )
         
